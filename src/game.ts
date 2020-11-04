@@ -1,10 +1,7 @@
 import utils from "../node_modules/decentraland-ecs-utils/index"
-import { Sound } from "./sound"
 import { Mirror } from "./mirror"
 import { redrawRays } from "./reflectedRay"
 
-// Sounds
-const mirrorMoveSound = new Sound(new AudioClip("sounds/mirrorMove.mp3"), false)
 
 // Base
 const base = new Entity()
@@ -75,7 +72,7 @@ engine.addEntity(delayDummyEntity)
 // Button down events
 input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
   if (e.hit.meshName == "mirrorSelector_collider") {
-    let mirrorStand = engine.entities[e.hit.entityId]
+    let mirrorStand = engine.entities[e.hit.entityId] as Mirror
     let mirrorStandPos = mirrorStand.getComponent(Transform).position
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
@@ -95,16 +92,7 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
       if (endPos.x >= 1 && endPos.x <= 15 && endPos.z >= 1 && endPos.z <= 31 && !mirrorOverlap && !isBlocked) {
         // Slide the mirror to its endPos over half a second
         if (!mirrorStand.hasComponent(utils.MoveTransformComponent)) {
-          mirrorMoveSound.getComponent(AudioSource).playOnce()
-          mirrorStand.addComponent(
-            new utils.MoveTransformComponent(currentPos, endPos, 0.5, () => {
-              delayDummyEntity.addComponentOrReplace(
-                new utils.Delay(100, () => {
-                  redrawRays() // Redraw
-                })
-              )
-            })
-          )
+          mirrorStand.moveMirror(currentPos, endPos)
         }
       }
     }
@@ -118,7 +106,7 @@ input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, true, (e) => {
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
     if (distance < MAX_DISTANCE) {
-      rotateMirror(mirrorStand, 45)
+      mirrorStand.rotateMirror(45)
     }
   }
 })
@@ -130,28 +118,9 @@ input.subscribe("BUTTON_DOWN", ActionButton.SECONDARY, true, (e) => {
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
     if (distance < MAX_DISTANCE) {
-      rotateMirror(mirrorStand, -45)
+      mirrorStand.rotateMirror(-45)
     }
   }
 })
-
-function rotateMirror(mirrorStand: Mirror, rotateAngle: number) {
-  let mirror = mirrorStand.getMirror()
-
-  if (!mirror.hasComponent(utils.RotateTransformComponent)) {
-    let currentRot = mirror.getComponent(Transform).rotation
-    let endRot = Quaternion.Euler(0, (mirrorStand.rotation += rotateAngle), 0)
-    mirrorMoveSound.getComponent(AudioSource).playOnce()
-    mirror.addComponent(
-      new utils.RotateTransformComponent(currentRot, endRot, 0.5, () => {
-        delayDummyEntity.addComponentOrReplace(
-          new utils.Delay(100, () => {
-            redrawRays() // Redraw
-          })
-        )
-      })
-    )
-  }
-}
 
 redrawRays()
