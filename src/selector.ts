@@ -13,7 +13,6 @@ engine.addEntity(selectorGlow)
 
 const MAX_DISTANCE = 3
 const SELECTOR_HAND_Y_OFFSET = 1.5
-const BOX_Y_OFFSET = 0.05
 
 // System that casts the rays to generate selector
 class SelectorSystem implements ISystem {
@@ -25,7 +24,7 @@ class SelectorSystem implements ISystem {
     PhysicsCast.instance.hitFirst(rayFromCamera, (raycastHitEntity) => {
       if (raycastHitEntity.entity.meshName == "mirrorSelector_collider") {
         let entityID = raycastHitEntity.entity.entityId
-        pickerFace(engine.entities[entityID], raycastHitEntity)
+        selectorFace(engine.entities[entityID], raycastHitEntity)
       } else {
         selectorHand.getComponent(Transform).scale.setAll(0)
         selectorGlow.getComponent(Transform).scale.setAll(0)
@@ -38,15 +37,15 @@ class SelectorSystem implements ISystem {
 engine.addSystem(new SelectorSystem())
 
 // Snaps the hand icon to discrete points on the mirror selector
-function pickerFace(entity: IEntity, raycastHitEntity: RaycastHitEntity) {
+function selectorFace(entity: IEntity, raycastHitEntity: RaycastHitEntity) {
   let transform = entity.getComponent(Transform).position.clone() // Clone position of the mirror
-  selectorHand.getComponent(Transform).position = transform // Set selector transform to match the mirror
-  selectorHand.getComponent(Transform).position.y = SELECTOR_HAND_Y_OFFSET
-  selectorHand.getComponent(Transform).scale.setAll(1)
-
   selectorGlow.getComponent(Transform).position = transform.clone()
-  selectorGlow.getComponent(Transform).position.y = BOX_Y_OFFSET
+  selectorGlow.getComponent(Transform).position.y = transform.y + 0.05
   selectorGlow.getComponent(Transform).scale.setAll(1)
+
+  selectorHand.getComponent(Transform).position = transform // Set selector transform to match the mirror
+  selectorHand.getComponent(Transform).position.y = transform.y + SELECTOR_HAND_Y_OFFSET
+  selectorHand.getComponent(Transform).scale.setAll(1)
 
   let selectorRotation = selectorHand.getComponent(Transform).rotation
   if (raycastHitEntity.hitNormal.x > 0) {

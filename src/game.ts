@@ -2,7 +2,6 @@ import utils from "../node_modules/decentraland-ecs-utils/index"
 import { Mirror } from "./mirror"
 import { redrawRays } from "./reflectedRay"
 
-
 // Base
 const base = new Entity()
 base.addComponent(new GLTFShape("models/baseCheckered.glb"))
