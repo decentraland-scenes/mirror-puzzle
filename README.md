@@ -1,7 +1,7 @@
 # Mirror Puzzle
 _demo of mirror-puzzle scene running in preview._
 
-![demo](https://github.com/decentraland-scenes/mirror-puzzle/blob/master/screenshots/mirror-puzzle.gif)
+![demo](https://github.com/decentraland-scenes/mirror-puzzle/blob/main/screenshots/mirror-puzzle.gif)
 
 ## Description
 A puzzle game where you reflect a beam of light to a target using a series of mirrors. To view the scene, please visit [here](https://mirror-puzzle.vercel.app/).
