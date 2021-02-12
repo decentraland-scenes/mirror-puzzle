@@ -1,15 +1,19 @@
-import { Sound } from "./sound"
-import { redrawRays } from "./reflectedRay"
-import utils from "../node_modules/decentraland-ecs-utils/index"
+import { Sound } from './sound'
+import { redrawRays } from './reflectedRay'
+import * as utils from '@dcl/ecs-scene-utils'
 
 // Sounds
-const mirrorMoveSound = new Sound(new AudioClip("sounds/mirrorMove.mp3"), false)
+const mirrorMoveSound = new Sound(new AudioClip('sounds/mirrorMove.mp3'), false)
 
 export class Mirror extends Entity {
   public rotation: number = 0 // Workaround to rotation bug
   public mirror: Entity = new Entity()
 
-  constructor(collider: GLTFShape, mirrorModel: GLTFShape, transform: Transform) {
+  constructor(
+    collider: GLTFShape,
+    mirrorModel: GLTFShape,
+    transform: Transform
+  ) {
     super()
     engine.addEntity(this)
     this.addComponent(collider)

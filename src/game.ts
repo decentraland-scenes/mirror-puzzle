@@ -1,15 +1,15 @@
-import utils from "../node_modules/decentraland-ecs-utils/index"
-import { Mirror } from "./mirror"
-import { redrawRays } from "./reflectedRay"
+import * as utils from '@dcl/ecs-scene-utils'
+import { Mirror } from './mirror'
+import { redrawRays } from './reflectedRay'
 
 // Base
 const base = new Entity()
-base.addComponent(new GLTFShape("models/baseCheckered.glb"))
+base.addComponent(new GLTFShape('models/baseCheckered.glb'))
 engine.addEntity(base)
 
 // Boundaries
 const boundaries = new Entity()
-boundaries.addComponent(new GLTFShape("models/boundaries.glb"))
+boundaries.addComponent(new GLTFShape('models/boundaries.glb'))
 engine.addEntity(boundaries)
 
 // Blocked coordinates
@@ -42,21 +42,37 @@ const blocked: Vector3[] = [
 
 // Mirrors
 //#region
-const mirrorSelectorShape = new GLTFShape("models/mirrorSelector.glb")
+const mirrorSelectorShape = new GLTFShape('models/mirrorSelector.glb')
 // Workaround: colliders have been scaled up as the raycasting is happening above the player's head
-const mirrorShape = new GLTFShape("models/mirrorScaledColliders.glb")
+const mirrorShape = new GLTFShape('models/mirrorScaledColliders.glb')
 const mirrors: Mirror[] = []
 
-const mirrorA = new Mirror(mirrorSelectorShape, mirrorShape, new Transform({ position: new Vector3(2.5, 0, 7.5) }))
+const mirrorA = new Mirror(
+  mirrorSelectorShape,
+  mirrorShape,
+  new Transform({ position: new Vector3(2.5, 0, 7.5) })
+)
 mirrors.push(mirrorA)
 
-const mirrorB = new Mirror(mirrorSelectorShape, mirrorShape, new Transform({ position: new Vector3(8.5, 0, 11.5) }))
+const mirrorB = new Mirror(
+  mirrorSelectorShape,
+  mirrorShape,
+  new Transform({ position: new Vector3(8.5, 0, 11.5) })
+)
 mirrors.push(mirrorB)
 
-const mirrorC = new Mirror(mirrorSelectorShape, mirrorShape, new Transform({ position: new Vector3(8.5, 0, 20.5) }))
+const mirrorC = new Mirror(
+  mirrorSelectorShape,
+  mirrorShape,
+  new Transform({ position: new Vector3(8.5, 0, 20.5) })
+)
 mirrors.push(mirrorC)
 
-const mirrorD = new Mirror(mirrorSelectorShape, mirrorShape, new Transform({ position: new Vector3(2.5, 0, 24.5) }))
+const mirrorD = new Mirror(
+  mirrorSelectorShape,
+  mirrorShape,
+  new Transform({ position: new Vector3(2.5, 0, 24.5) })
+)
 mirrors.push(mirrorD)
 //#endregion
 
@@ -69,8 +85,8 @@ const delayDummyEntity = new Entity()
 engine.addEntity(delayDummyEntity)
 
 // Button down events
-input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
-  if (e.hit.meshName == "mirrorSelector_collider") {
+input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (e) => {
+  if (e.hit.meshName == 'mirrorSelector_collider') {
     let mirrorStand = engine.entities[e.hit.entityId] as Mirror
     let mirrorStandPos = mirrorStand.getComponent(Transform).position
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
@@ -88,7 +104,14 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
       })
 
       // Check boundaries
-      if (endPos.x >= 1 && endPos.x <= 15 && endPos.z >= 1 && endPos.z <= 31 && !mirrorOverlap && !isBlocked) {
+      if (
+        endPos.x >= 1 &&
+        endPos.x <= 15 &&
+        endPos.z >= 1 &&
+        endPos.z <= 31 &&
+        !mirrorOverlap &&
+        !isBlocked
+      ) {
         // Slide the mirror to its endPos over half a second
         if (!mirrorStand.hasComponent(utils.MoveTransformComponent)) {
           mirrorStand.moveMirror(currentPos, endPos)
@@ -98,8 +121,8 @@ input.subscribe("BUTTON_DOWN", ActionButton.POINTER, true, (e) => {
   }
 })
 
-input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, true, (e) => {
-  if (e.hit.meshName == "mirrorSelector_collider") {
+input.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, true, (e) => {
+  if (e.hit.meshName == 'mirrorSelector_collider') {
     let mirrorStand = engine.entities[e.hit.entityId] as Mirror
     let mirrorStandPos = mirrorStand.getComponent(Transform).position
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
@@ -110,8 +133,8 @@ input.subscribe("BUTTON_DOWN", ActionButton.PRIMARY, true, (e) => {
   }
 })
 
-input.subscribe("BUTTON_DOWN", ActionButton.SECONDARY, true, (e) => {
-  if (e.hit.meshName == "mirrorSelector_collider") {
+input.subscribe('BUTTON_DOWN', ActionButton.SECONDARY, true, (e) => {
+  if (e.hit.meshName == 'mirrorSelector_collider') {
     let mirrorStand = engine.entities[e.hit.entityId] as Mirror
     let mirrorStandPos = mirrorStand.getComponent(Transform).position
     let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
