@@ -37,7 +37,7 @@ const blocked: Vector3[] = [
   new Vector3(4.5, 0, 17.5),
   new Vector3(3.5, 0, 17.5),
   new Vector3(2.5, 0, 17.5),
-  new Vector3(1.5, 0, 17.5),
+  new Vector3(1.5, 0, 17.5)
 ]
 
 // Mirrors
@@ -86,20 +86,20 @@ engine.addEntity(delayDummyEntity)
 
 // Button down events
 input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (e) => {
-  if (e.hit.meshName == 'mirrorSelector_collider') {
-    let mirrorStand = engine.entities[e.hit.entityId] as Mirror
-    let mirrorStandPos = mirrorStand.getComponent(Transform).position
-    let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
+  if (e.hit.meshName === 'mirrorSelector_collider') {
+    const mirrorStand = engine.entities[e.hit.entityId] as Mirror
+    const mirrorStandPos = mirrorStand.getComponent(Transform).position
+    const distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
     if (distance < MAX_DISTANCE) {
-      let currentPos = mirrorStand.getComponent(Transform).position
-      let endPos = currentPos.subtract(e.hit.normal)
+      const currentPos = mirrorStand.getComponent(Transform).position
+      const endPos = currentPos.subtract(e.hit.normal)
 
       // Checks if at least one mirror in the array is blocking its path
-      let mirrorOverlap = mirrors.some((mirror) => {
+      const mirrorOverlap = mirrors.some((mirror) => {
         return endPos.equals(mirror.getComponent(Transform).position)
       })
-      let isBlocked = blocked.some((block) => {
+      const isBlocked = blocked.some((block) => {
         return endPos.equals(block)
       })
 
@@ -122,10 +122,10 @@ input.subscribe('BUTTON_DOWN', ActionButton.POINTER, true, (e) => {
 })
 
 input.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, true, (e) => {
-  if (e.hit.meshName == 'mirrorSelector_collider') {
-    let mirrorStand = engine.entities[e.hit.entityId] as Mirror
-    let mirrorStandPos = mirrorStand.getComponent(Transform).position
-    let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
+  if (e.hit.meshName === 'mirrorSelector_collider') {
+    const mirrorStand = engine.entities[e.hit.entityId] as Mirror
+    const mirrorStandPos = mirrorStand.getComponent(Transform).position
+    const distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
     if (distance < MAX_DISTANCE) {
       mirrorStand.rotateMirror(45)
@@ -134,10 +134,10 @@ input.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, true, (e) => {
 })
 
 input.subscribe('BUTTON_DOWN', ActionButton.SECONDARY, true, (e) => {
-  if (e.hit.meshName == 'mirrorSelector_collider') {
-    let mirrorStand = engine.entities[e.hit.entityId] as Mirror
-    let mirrorStandPos = mirrorStand.getComponent(Transform).position
-    let distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
+  if (e.hit.meshName === 'mirrorSelector_collider') {
+    const mirrorStand = engine.entities[e.hit.entityId] as Mirror
+    const mirrorStandPos = mirrorStand.getComponent(Transform).position
+    const distance = Vector3.Distance(mirrorStandPos, Camera.instance.position)
 
     if (distance < MAX_DISTANCE) {
       mirrorStand.rotateMirror(-45)

@@ -26,8 +26,8 @@ export class Mirror extends Entity {
   rotateMirror(rotateAngle: number): void {
     // Rotate the mirror to its endPot over half a second
     if (!this.mirror.hasComponent(utils.RotateTransformComponent)) {
-      let currentRot = this.mirror.getComponent(Transform).rotation
-      let endRot = Quaternion.Euler(0, (this.rotation += rotateAngle), 0)
+      const currentRot = this.mirror.getComponent(Transform).rotation
+      const endRot = Quaternion.Euler(0, (this.rotation += rotateAngle), 0)
       mirrorMoveSound.getComponent(AudioSource).playOnce()
       this.mirror.addComponent(
         new utils.RotateTransformComponent(currentRot, endRot, 0.5, () => {
